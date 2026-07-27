@@ -1,5 +1,6 @@
 import 'package:app/service/api_whatsapp.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class GerarQrcode extends StatefulWidget {
   const GerarQrcode({
@@ -7,7 +8,7 @@ class GerarQrcode extends StatefulWidget {
     required this.numeroController,
     required this.mensagemController,
   });
-  
+
   final TextEditingController numeroController;
   final TextEditingController mensagemController;
   @override
@@ -19,10 +20,27 @@ class _GerarQrcodeState extends State<GerarQrcode> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
-        await WhatsAppService().gerarQrcode(
+        final qrcode = await WhatsAppService().gerarQrcode(
           widget.numeroController.text,
           widget.mensagemController.text,
         );
+
+        if (qrcode is String) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('QR Code'),
+              content: SizedBox(
+                width: 200,
+                height: 200,
+                child: QrImageView(
+                  data: qrcode,
+                  size: 20,
+                ),
+              ),
+            ),
+          );
+        }
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
