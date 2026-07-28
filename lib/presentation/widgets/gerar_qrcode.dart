@@ -24,23 +24,17 @@ class _GerarQrcodeState extends State<GerarQrcode> {
           widget.numeroController.text,
           widget.mensagemController.text,
         );
-
-        if (qrcode is String) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('QR Code'),
-              content: SizedBox(
-                width: 200,
-                height: 200,
-                child: QrImageView(
-                  data: qrcode,
-                  size: 20,
-                ),
-              ),
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('QR Code'),
+            content: SizedBox(
+              width: 200,
+              height: 200,
+              child: QrImageView(data: qrcode, size: 20),
             ),
-          );
-        }
+          ),
+        );
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

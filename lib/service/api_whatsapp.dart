@@ -1,9 +1,7 @@
-import 'package:qr_flutter/qr_flutter.dart';
-
 class WhatsAppService {
   Future<Object> gerarLink(String numero, String mensagem) async {
     try {
-      if (numero.length != 11) {
+      if (numero.length != 15) {
         throw Exception('Número de telefone inválido');
       }
       if (mensagem.isEmpty) {

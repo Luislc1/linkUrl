@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class FormHome extends StatefulWidget {
   const FormHome({
@@ -37,11 +38,14 @@ class _FormHomeState extends State<FormHome> {
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Form(
               child: TextFormField(
+                inputFormatters: [
+                  MaskTextInputFormatter(mask: '(##) #####-#####'),
+                ],
                 controller: widget.numeroController,
                 validator: (value) =>
-                    widget.numeroController.text.length != 11 ? 'Número de telefone inválido' : null,
+                    widget.numeroController.text.length != 15 ? 'Número de telefone inválido' : null,
                 keyboardType: TextInputType.number,
-                maxLength: 11,
+                maxLength: 15,
                 decoration: InputDecoration(
                   hintText: '(64) 99090-9090',
                   border: InputBorder.none,
