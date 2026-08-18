@@ -6,11 +6,13 @@ class GerarQrcode extends StatefulWidget {
   const GerarQrcode({
     super.key,
     required this.numeroController,
-    required this.mensagemController,
+    required this.mensagemController, required this.whatsappService,
   });
 
   final TextEditingController numeroController;
   final TextEditingController mensagemController;
+
+  final WhatsAppService whatsappService;
   @override
   State<StatefulWidget> createState() => _GerarQrcodeState();
 }
@@ -20,7 +22,7 @@ class _GerarQrcodeState extends State<GerarQrcode> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
-        final qrcode = await WhatsAppService().gerarQrcode(
+        final qrcode = await widget.whatsappService.gerarQrcode(
           widget.numeroController.text,
           widget.mensagemController.text,
         );

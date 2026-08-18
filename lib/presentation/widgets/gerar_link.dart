@@ -1,4 +1,3 @@
-import 'package:app/presentation/widgets/form.dart';
 import 'package:app/service/api_whatsapp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,10 +7,12 @@ class GerarLink extends StatefulWidget {
     super.key,
     required this.numeroController,
     required this.mensagemController,
+    required this.whatsappService,
   });
 
   final TextEditingController numeroController;
   final TextEditingController mensagemController;
+  final WhatsAppService whatsappService;
 
   @override
   State<GerarLink> createState() => _GerarLinkState();
@@ -22,10 +23,12 @@ class _GerarLinkState extends State<GerarLink> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
-        final link = await WhatsAppService().gerarLink(
+        final link = await widget.whatsappService.gerarLink(
           widget.numeroController.text,
           widget.mensagemController.text,
         );
+
+        print(link);
         if (!mounted || link is Exception) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

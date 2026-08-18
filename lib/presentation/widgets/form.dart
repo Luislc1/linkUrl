@@ -39,11 +39,11 @@ class _FormHomeState extends State<FormHome> {
             child: Form(
               child: TextFormField(
                 inputFormatters: [
-                  MaskTextInputFormatter(mask: '(##) #####-#####'),
+                  MaskTextInputFormatter(mask: '(##) #####-####'),
                 ],
                 controller: widget.numeroController,
                 validator: (value) =>
-                    widget.numeroController.text.length != 15 ? 'Número de telefone inválido' : null,
+                    widget.numeroController.text.length != 11 ? 'Número de telefone inválido' : null,
                 keyboardType: TextInputType.number,
                 maxLength: 15,
                 decoration: InputDecoration(

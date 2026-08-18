@@ -2,6 +2,7 @@ import 'package:app/presentation/widgets/app_bar.dart';
 import 'package:app/presentation/widgets/form.dart';
 import 'package:app/presentation/widgets/gerar_link.dart';
 import 'package:app/presentation/widgets/gerar_qrcode.dart';
+import 'package:app/service/api_whatsapp.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -34,11 +35,13 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GerarLink(
+                    whatsappService: WhatsAppService(),
                     numeroController: numeroController,
                     mensagemController: mensagemController,
                   ),
                   SizedBox(width: 10),
                   GerarQrcode(
+                    whatsappService: WhatsAppService(),
                     numeroController: numeroController,
                     mensagemController: mensagemController,
                   ),
