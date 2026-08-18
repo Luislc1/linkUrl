@@ -58,7 +58,7 @@ class _GerarLinkState extends State<GerarLink> {
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF053549),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

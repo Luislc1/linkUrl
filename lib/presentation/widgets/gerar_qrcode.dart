@@ -26,6 +26,20 @@ class _GerarQrcodeState extends State<GerarQrcode> {
           widget.numeroController.text,
           widget.mensagemController.text,
         );
+
+        if(!mounted){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 2),
+              content: Text(
+                textAlign: TextAlign.center,
+                qrcode.toString(),
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          );
+        }
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
