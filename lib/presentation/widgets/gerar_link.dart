@@ -1,4 +1,4 @@
-import 'package:app/service/api_whatsapp.dart';
+import 'package:app/provider/link_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,12 +7,12 @@ class GerarLink extends StatefulWidget {
     super.key,
     required this.numeroController,
     required this.mensagemController,
-    required this.whatsappService,
+    required this.linkProvider,
   });
 
   final TextEditingController numeroController;
   final TextEditingController mensagemController;
-  final WhatsAppService whatsappService;
+  final LinkProvider linkProvider;
 
   @override
   State<GerarLink> createState() => _GerarLinkState();
@@ -22,21 +22,37 @@ class _GerarLinkState extends State<GerarLink> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () async {
-        final link = await widget.whatsappService.gerarLink(
-          widget.numeroController.text,
-          widget.mensagemController.text,
-        );
-
-        print(link);
-        if (!mounted || link is Exception) {
+      onPressed: () {
+        if (widget.numeroController.text.isEmpty ||
+            widget.mensagemController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.red,
               duration: Duration(seconds: 2),
               content: Text(
+                'Preencha todos os campos',
                 textAlign: TextAlign.center,
-                link.toString(),
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          );
+          return;
+        }
+
+        widget.linkProvider.gerarLinkProvider(
+          widget.numeroController.text,
+          widget.mensagemController.text,
+        );
+        if (!mounted) return;
+
+        if (widget.linkProvider.erro != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 2),
+              content: Text(
+                widget.linkProvider.erro!,
+                textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -54,7 +70,6 @@ class _GerarLinkState extends State<GerarLink> {
             ),
           );
         }
-        Clipboard.setData(ClipboardData(text: link as String));
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

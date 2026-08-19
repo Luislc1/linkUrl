@@ -1,5 +1,5 @@
 import 'package:app/presentation/widgets/gerar_link.dart';
-import 'package:app/service/api_whatsapp.dart';
+import 'package:app/service/link_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

@@ -1,4 +1,4 @@
-import 'package:app/service/api_whatsapp.dart';
+import 'package:app/provider/link_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -6,13 +6,14 @@ class GerarQrcode extends StatefulWidget {
   const GerarQrcode({
     super.key,
     required this.numeroController,
-    required this.mensagemController, required this.whatsappService,
+    required this.mensagemController,
+    required this.linkProvider,
   });
 
   final TextEditingController numeroController;
   final TextEditingController mensagemController;
+  final LinkProvider linkProvider;
 
-  final WhatsAppService whatsappService;
   @override
   State<StatefulWidget> createState() => _GerarQrcodeState();
 }
@@ -21,25 +22,45 @@ class _GerarQrcodeState extends State<GerarQrcode> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () async {
-        final qrcode = await widget.whatsappService.gerarQrcode(
-          widget.numeroController.text,
-          widget.mensagemController.text,
-        );
-
-        if(!mounted){
+      onPressed: () {
+        if (widget.numeroController.text.isEmpty ||
+            widget.mensagemController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.red,
               duration: Duration(seconds: 2),
               content: Text(
+                'Preencha todos os campos',
                 textAlign: TextAlign.center,
-                qrcode.toString(),
                 style: TextStyle(color: Colors.white),
               ),
             ),
           );
+          return;
         }
+
+        widget.linkProvider.gerarLinkProvider(
+          widget.numeroController.text,
+          widget.mensagemController.text,
+        );
+
+        if (!mounted) return;
+
+        if (widget.linkProvider.erro != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 2),
+              content: Text(
+                widget.linkProvider.erro!,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          );
+          return;
+        }
+
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -47,7 +68,7 @@ class _GerarQrcodeState extends State<GerarQrcode> {
             content: SizedBox(
               width: 200,
               height: 200,
-              child: QrImageView(data: qrcode, size: 20),
+              child: QrImageView(data: widget.linkProvider.link!, size: 200),
             ),
           ),
         );
